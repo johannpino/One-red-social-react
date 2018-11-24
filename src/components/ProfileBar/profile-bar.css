@@ -1,0 +1,16 @@
+.root-profile-bar{
+    display: flex;
+    margin: 1em;
+    align-items: center;
+}
+.username{
+    color: #666;
+}
+.button-profile-bar{
+    background-color: #2d84cc;
+    color: #fff;
+    border: 1px solid #1f6fb1;
+    border-radius: 5px;
+    margin: 0 1em;
+    padding: 0.5em;
+}

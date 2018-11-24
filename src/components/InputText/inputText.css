@@ -1,0 +1,29 @@
+.textarea{
+    border-radius: 5px;
+    border:1px solid #ddd;
+    width: 90%;
+    height: 5em;
+    padding: .73em;
+    margin: 1em .5em;
+}
+
+.buttons{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.buttons > button {
+    border-radius: 5px;
+    padding: .5em .75em;
+    margin: .3em;
+}
+
+.button-close{
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+.button-send{
+    background-color: #2d84cc;
+    border:1px solid #226aa6;
+    color: #fff;
+}

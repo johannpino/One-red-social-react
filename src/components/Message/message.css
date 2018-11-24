@@ -1,0 +1,57 @@
+.root-user{
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 1em;
+    margin: 0.5em;
+}
+
+.text {
+    font-size: 16px;
+    font-weight: 200;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+}
+
+.avatar{
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+}
+.displayName{
+    font-weight: bold;
+    padding: 0.5em;
+}
+.username{
+    color: #aaa;
+}
+.date {
+    color: #aaa;
+    padding: 0.5em;
+    font-size: 8px;
+}
+.buttons{
+    display: flex;
+    justify-content: flex-end;
+    color: #aaa;
+}
+.icon{
+    cursor: pointer;
+    margin-left: 30px;
+}
+
+.num{
+    font-size: 10pt;
+    margin-right: 3em;
+    margin-left: .25em;
+}
+
+.rtGreen{
+    color: green;
+}
+.favYellow{
+    color: yellow;
+}
