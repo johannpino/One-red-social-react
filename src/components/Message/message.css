@@ -51,7 +51,11 @@
 
 .rtGreen{
     color: green;
+    cursor: pointer;
+    margin-left: 30px;
 }
 .favYellow{
     color: yellow;
+    cursor: pointer;
+    margin-left: 30px;
 }

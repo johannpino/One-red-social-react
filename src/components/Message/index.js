@@ -21,10 +21,9 @@ class Message extends Component {
     onPressFavorite(){
         this.props.onFavorite()
         this.setState({
-            pressRetweet: true
+            pressFavorite: true
         })
     }
-
 
 
 
@@ -42,7 +41,9 @@ class Message extends Component {
             </div>
             <h3>{this.props.text}</h3>
             <div className="buttons">
-                <div className="icon"><span className="fa fa-reply"></span></div>
+                <div className="icon" onClick={this.props.onReplyTweet} >
+                    <span className="fa fa-reply"></span>
+                </div>
                 <div className={(this.state.pressRetweet) ? 'rtGreen' : 'icon'} onClick={this.onPressRetweet.bind(this)} >
                     <span className="fa fa-retweet"></span>
                     <span className="num">{this.props.numRetweets}</span>

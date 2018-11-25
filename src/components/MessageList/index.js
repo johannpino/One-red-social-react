@@ -6,10 +6,10 @@ class MessageList extends Component {
     render() {
         return (
             <div className="root-message-list">
-                {this.props.messages.map((msg,i) =>{
+                {this.props.messages.map(msg =>{
                     return(
                         <Message 
-                            key={i}
+                            key={msg.id}
                             text={msg.text}
                             picture={msg.picture}
                             displayName={msg.displayName}
@@ -17,8 +17,9 @@ class MessageList extends Component {
                             date={msg.date}
                             numRetweets={msg.retweets}
                             numFavorite={msg.favorites}
-                            onRetweet={() => this.props.onRetweet(msg.i).bind(this)}
-                            onFavorite={() => this.props.onFavorite(msg.i).bind(this)}
+                            onRetweet={() => this.props.onRetweet(msg.id)}
+                            onFavorite={() => this.props.onFavorite(msg.id)}
+                            onReplyTweet={() => this.props.onReplyTweet(msg.id, msg.username)}
                         />
                     )
                 }).reverse()}

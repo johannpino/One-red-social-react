@@ -6,7 +6,9 @@ class InputText extends Component {
         return (
             <div>
                 <form className="form" onSubmit={this.props.onSendText}>
-                    <textarea className="textarea" name="text"></textarea>
+                    <textarea className="textarea" name="text" defaultValue={(this.props.usernameToReply) ? `@${this.props.usernameToReply} ` : ""} >
+                        {}
+                    </textarea>
                     <div className='buttons'>
                         <button className="button-close" onClick={this.props.onCloseText}>Cerrar</button>
                         <button className="button-send" type="submit">Enviar</button>
