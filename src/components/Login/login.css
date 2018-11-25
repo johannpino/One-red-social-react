@@ -1,0 +1,14 @@
+.root-login{
+    margin: 0 1em;
+    text-align: center;
+}
+.text-login{
+    color: #888;
+}
+.button-login{
+    border: #666;
+    border-radius: 5px;
+    padding: .5em 1em;
+    background-color: #aaa;
+    color: #eaeaea;
+}

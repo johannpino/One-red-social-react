@@ -1,0 +1,35 @@
+.root-profile{
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.avatar-profile{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 1em auto;
+}
+.name-profile{
+    font-weight: 700;
+    font-size: 20pt;
+    text-align: center;
+}
+
+.data-profile{
+    list-style-type: none;
+    margin: 1em 0;
+    padding: 0;
+}
+
+.data-profile > li {
+    background-color: #fff;
+    padding: 1em;
+    margin: 0;
+    border: 1px solid #ddd;
+    color: #777;
+}
+.data-profile li span {
+    margin-right: 5px;
+}
