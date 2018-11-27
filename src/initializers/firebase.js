@@ -1,7 +1,7 @@
 import firebase from 'firebase'
 
 const config = {
-    apiKey: "AIzaSyClyEFfrLS0bEkpLtmMvIjKguoHEAHle1s",
+    apiKey: "Key",
     authDomain: "one-red-social-react.firebaseapp.com",
     databaseURL: "https://one-red-social-react.firebaseio.com",
     projectId: "one-red-social-react",
