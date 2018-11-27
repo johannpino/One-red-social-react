@@ -6,20 +6,27 @@ import Header from './components/Header'
 import Main from './components/Main'
 import Profile from './components/Profile'
 import Login from './components/Login';
+import firebase from './initializers/firebase'
 
 class App extends Component {
 
   constructor(){
     super()
     this.state = {
-       user: {
-        photoURL: "https://pbs.twimg.com/profile_images/1065632042950500353/PjGFZqpF_400x400.jpg",
-        email: "johannpino@gmail.com",
-        displayName: "Johann Pino",
-        location: 'Santiago, Chile'
-       }
+       user:null
     }
   }
+
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged(user => {
+      if(user){
+        this.setState({user})
+      }else{
+        this.setState({user:null})
+      }
+    })
+  }
+  
 
   renderProfile = () => (
     <Profile
@@ -32,13 +39,27 @@ class App extends Component {
   )
 
   handleOnAuth = () => {
-    console.log('clik auth')
+    const provider = new firebase.auth.GithubAuthProvider()
+
+    firebase.auth().signInWithPopup(provider)
+      .then(rs => console.log(`${rs.user.email}ha iniciado sesión` ))
+      .catch(error => console.log(error.code, error.message))
+  }
+
+  handleLogout = () => {
+    firebase.auth().signOut()
+      .then(()=> console.log('Te has desconectado correctamente'))
+      .catch(() => console.log('Un Error ocurrio')
+      )
   }
 
   renderHome = () => {
     if(this.state.user){
       return (
-        <Main user={this.state.user} />
+        <Main 
+          user={this.state.user}
+          onLogout={this.handleLogout}
+        />
       )
     }else{
       return (
