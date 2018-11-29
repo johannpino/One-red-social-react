@@ -1,46 +1,29 @@
 import React, { Component } from 'react'
 import 'normalize-css'
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
+import {connect} from 'react-redux'
 import './App.css'
 import Header from './components/Header'
 import Main from './components/Main'
 import Profile from './components/Profile'
 import Login from './components/Login';
 import firebase from './initializers/firebase'
+import { setUser, clearUser } from './redux/actions';
 
 class App extends Component {
 
-  constructor(){
-    super()
-    this.state = {
-       user:null
-    }
-  }
-
-  componentDidMount() {
-    firebase.auth().onAuthStateChanged(user => {
-      if(user){
-        this.setState({user})
-      }else{
-        this.setState({user:null})
-      }
-    })
-  }
-  
-
   renderProfile = () => (
     <Profile
-      picture={this.state.user.photoURL}
-      username={this.state.user.email.split('@')[0]}
-      displayName={this.state.user.displayName}
-      location={this.state.user.location}
-      emailAddress={this.state.user.email}
+      picture={this.props.user.photoURL}
+      username={this.props.user.email.split('@')[0]}
+      displayName={this.props.user.displayName}
+      location={this.props.user.location}
+      emailAddress={this.props.user.email}
     />
   )
 
   handleOnAuth = () => {
     const provider = new firebase.auth.GithubAuthProvider()
-
     firebase.auth().signInWithPopup(provider)
       .then(rs => console.log(`${rs.user.email}ha iniciado sesión` ))
       .catch(error => console.log(error.code, error.message))
@@ -54,10 +37,10 @@ class App extends Component {
   }
 
   renderHome = () => {
-    if(this.state.user){
+    if(this.props.user){
       return (
         <Main 
-          user={this.state.user}
+          user={this.props.user}
           onLogout={this.handleLogout}
         />
       )
@@ -87,4 +70,18 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToPros = (state) => {
+  return {
+    user: state.user
+  }
+}
+
+const mapDispatchToProps = dispatch => (
+  {
+    setUser: user => dispatch(setUser(user)),
+    clearUser: () => dispatch(clearUser())
+  }
+)
+
+
+export default connect(mapStateToPros, mapDispatchToProps)(App);

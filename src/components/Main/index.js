@@ -4,38 +4,34 @@ import MessageList from '../MessageList'
 import InputText from '../InputText'
 import ProfileBar from '../ProfileBar'
 import firebase from '../../initializers/firebase'
+import {connect} from 'react-redux';
+import { onpenInputText, 
+        closeInputText, 
+        userNameToReply,
+        clearUserNameToReply, 
+        addMessages, 
+        userRetweetFavorite, 
+        addRetweets,
+        addFavorites,
+        addMessagesRetweets,
+        addMessagesFavorites
+} from '../../redux/actions';
 
 class Main extends Component {
 
-    constructor(props){
-        super(props)
-        this.state = {
-            user: Object.assign({}, this.props.user, {retweets:[]}, {favorites:[]}),
-            OpenText: false,
-            usernameToReply: "",
-            messages: []
-        }
-    }
-
     componentDidMount() {
         const messagesRef = firebase.database().ref().child('messages')
-
         messagesRef.on('child_added', snapshot => {
-            this.setState({
-                messages: this.state.messages.concat(snapshot.val()),
-                OpenText: false
-            })
+            this.props.addMessages(snapshot.val())
         })
+        this.props.userRetweetFavorite()     
     }
     
 
     handleOpenText(e){
         e.preventDefault()
-        console.log('open');
-        
-        this.setState({
-            OpenText: true
-        })
+        this.props.onpenInputText(true)
+        this.props.clearUserNameToReply()
     }
 
     handleSendText(e){
@@ -59,71 +55,61 @@ class Main extends Component {
 
     handleCloseText(e){
         e.preventDefault()
-        console.log('close');
-        this.setState({
-            OpenText: false
-        })
-
+        this.props.closeInputText()
     }
 
     renderOpenText(){
-        if(this.state.OpenText){
+        if(this.props.OpenText){
             return (
                 <InputText 
                     onSendText={this.handleSendText.bind(this)} 
                     onCloseText={this.handleCloseText.bind(this)}
-                    usernameToReply={this.state.usernameToReply}
+                    usernameToReply={this.props.usernameToReply}
             />
             )
         }
     }
 
     handleRetweet(msgId){
-        let alreadyRetweet = this.state.user.retweets.filter(rt => rt === msgId)
+        let alreadyRetweet = this.props.user.retweets.filter(rt => rt === msgId)
         if(alreadyRetweet.length === 0){
-            let messages = this.state.messages.map(msg => {
+            let messages = this.props.messages.map(msg => {
                 if(msg.id === msgId){
                     msg.retweets++
                 }
-                console.log(msg)
                 return msg
             })
 
-            let user = Object.assign({}, this.state.user)
-        user.retweets.push(msgId)
+            let user = Object.assign({}, this.props.user)
+            user.retweets.push(msgId)
 
-        this.setState({
-            messages,
-            user
-        })
+            this.props.addMessagesRetweets(messages)
+            this.props.addRetweets(user)
+            
         }
         
     }
 
     handleFavorite(msgId){
-        let alreadyFavorited = this.state.user.favorites.filter(fav => fav === msgId )
+        let alreadyFavorited = this.props.user.favorites.filter(fav => fav === msgId )
         if(alreadyFavorited.length === 0){
-            let messages = this.state.messages.map(msg => {
+            let messages = this.props.messages.map(msg => {
                 if(msg.id === msgId){
                     msg.favorites++
                 }
                 return msg
             })
-            let user = Object.assign({}, this.state.user)
+            let user = Object.assign({}, this.props.user)
             user.favorites.push(msgId)
 
-            this.setState({
-                messages,
-                user
-            })
+            this.props.addMessagesFavorites(messages)
+            this.props.addFavorites(user)
         }
     }
 
     handleReplyTweet = (msgId, usernameToReply) => {
-        this.setState({
-            OpenText:true,
-            usernameToReply
-        })
+        this.props.onpenInputText(true)
+        this.props.userNameToReply(usernameToReply)
     }
 
 
@@ -140,7 +126,7 @@ class Main extends Component {
                     this.renderOpenText()
                     
                 }
-                <MessageList messages={this.state.messages} 
+                <MessageList messages={this.props.messages} 
                             onRetweet={this.handleRetweet.bind(this)} 
                             onFavorite={this.handleFavorite.bind(this)} 
                             onReplyTweet={this.handleReplyTweet}
@@ -151,4 +137,28 @@ class Main extends Component {
     }
 }
 
-export default Main;
+const mapStateToProps = (state) => {    
+    return {
+        user: state.user,
+        OpenText: state.OpenText,
+        usernameToReply: state.usernameToReply,
+        messages: state.messages
+    }
+}
+
+const mapDispatchToProps = dispatch => (
+    {
+        onpenInputText: value => dispatch(onpenInputText(value)),
+        closeInputText: () => dispatch(closeInputText()),
+        userNameToReply: value => dispatch(userNameToReply(value)),
+        clearUserNameToReply: () => dispatch(clearUserNameToReply()),
+        addMessages: value => dispatch(addMessages(value)),
+        userRetweetFavorite: () => dispatch(userRetweetFavorite()),
+        addRetweets: value => dispatch(addRetweets(value)),
+        addFavorites: value => dispatch(addFavorites(value)),
+        addMessagesRetweets: value => dispatch(addMessagesRetweets(value)),
+        addMessagesFavorites: value => dispatch(addMessagesFavorites(value))
+    }
+)
+
+export default connect(mapStateToProps,mapDispatchToProps)(Main);
